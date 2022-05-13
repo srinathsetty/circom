@@ -58,7 +58,7 @@ impl Default for WASMProducer {
         WASMProducer {
             main_header: "Main_0".to_string(),
             main_signal_offset: 1,
-            prime: "21888242871839275222246405745257275088548364400416034343698204186575808495617"
+            prime: "7237005577332262213973186563042994240857116359379907606001950938285454250989"
                 .to_string(),
             fr_memory_size: 1948,
             size_32_bit: 8,

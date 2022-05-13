@@ -28,7 +28,7 @@ fn build_template_instances(
 ) -> FieldTracker {
     let mut cmp_id = 0;
     let mut tmp_id = 0;
-    let parallels: Vec<_> = ti.iter().map(|i| i.is_parallel ).collect();
+    let parallels: Vec<_> = ti.iter().map(|i| i.is_parallel).collect();
     for template in ti {
         let header = template.template_header;
         let name = template.template_name;
@@ -43,7 +43,8 @@ fn build_template_instances(
         }
         circuit.wasm_producer.message_list.push(msg);
         circuit.c_producer.has_parallelism |= template.is_parallel;
-        let component_to_parallel: HashMap<_,_> = template.triggers
+        let component_to_parallel: HashMap<_, _> = template
+            .triggers
             .iter()
             .map(|t| (t.component_name.clone(), parallels[t.template_id]))
             .collect();
@@ -145,7 +146,7 @@ fn build_function_instances(
 }
 
 // WASM producer builder
-fn initialize_wasm_producer(vcp: &VCP, database: &TemplateDB, wat_flag:bool) -> WASMProducer {
+fn initialize_wasm_producer(vcp: &VCP, database: &TemplateDB, wat_flag: bool) -> WASMProducer {
     use program_structure::utils::constants::UsefulConstants;
     let initial_node = vcp.get_main_id();
     let prime = UsefulConstants::new().get_p().clone();
@@ -155,7 +156,8 @@ fn initialize_wasm_producer(vcp: &VCP, database: &TemplateDB, wat_flag:bool) -> 
     producer.main_signal_offset = 1;
     producer.prime = prime.to_str_radix(10);
     // for each created component we store three u32, for each son we store a u32 in its father
-    producer.size_of_component_tree = stats.all_created_components * 3 + stats.all_needed_subcomponents_indexes;
+    producer.size_of_component_tree =
+        stats.all_created_components * 3 + stats.all_needed_subcomponents_indexes;
     producer.total_number_of_signals = stats.all_signals + 1;
     producer.size_32_bit = prime.bits() / 32 + if prime.bits() % 32 != 0 { 1 } else { 0 };
     producer.size_32_shift = 0;
@@ -187,7 +189,8 @@ fn initialize_c_producer(vcp: &VCP, database: &TemplateDB) -> CProducer {
     producer.main_header = vcp.get_main_instance().unwrap().template_header.clone();
     producer.main_signal_offset = 1;
     producer.prime = prime.to_str_radix(10);
-    producer.size_of_component_tree = stats.all_created_components * 3 + stats.all_needed_subcomponents_indexes;
+    producer.size_of_component_tree =
+        stats.all_created_components * 3 + stats.all_needed_subcomponents_indexes;
     producer.total_number_of_signals = stats.all_signals + 1;
     producer.size_32_bit = prime.bits() / 32 + if prime.bits() % 32 != 0 { 1 } else { 0 };
     producer.size_32_shift = 0;
@@ -202,11 +205,11 @@ fn initialize_c_producer(vcp: &VCP, database: &TemplateDB) -> CProducer {
     producer.signals_in_witness = producer.witness_to_signal_list.len();
     producer.number_of_main_inputs = vcp.templates[initial_node].number_of_inputs;
     producer.number_of_main_outputs = vcp.templates[initial_node].number_of_outputs;
-    producer.main_input_list = main_input_list(&vcp.templates[initial_node]);   
+    producer.main_input_list = main_input_list(&vcp.templates[initial_node]);
     producer.io_map = build_io_map(vcp, database);
     producer.template_instance_list = build_template_list(vcp);
     producer.field_tracking.clear();
-    
+
     producer
 }
 

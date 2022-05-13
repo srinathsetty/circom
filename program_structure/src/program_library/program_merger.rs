@@ -25,7 +25,11 @@ impl Merger {
         Merger::default()
     }
 
-    pub fn add_definitions(&mut self, file_id: FileID, definitions: Vec<Definition>)  -> Result<(), Vec<Report>> {
+    pub fn add_definitions(
+        &mut self,
+        file_id: FileID,
+        definitions: Vec<Definition>,
+    ) -> Result<(), Vec<Report>> {
         let mut reports = vec![];
         for definition in definitions {
             let (name, meta) = match definition {
@@ -78,7 +82,11 @@ impl Merger {
                 reports.push(report);
             }
         }
-        if reports.is_empty() { Ok(()) } else { Err(reports) }
+        if reports.is_empty() {
+            Ok(())
+        } else {
+            Err(reports)
+        }
     }
     pub fn contains_function(&self, function_name: &str) -> bool {
         self.get_function_info().contains_key(function_name)
@@ -99,7 +107,6 @@ impl Merger {
     fn get_mut_template_info(&mut self) -> &mut TemplateInfo {
         &mut self.template_info
     }
-
 
     pub fn decompose(self) -> (usize, FunctionInfo, TemplateInfo) {
         (self.fresh_id, self.function_info, self.template_info)

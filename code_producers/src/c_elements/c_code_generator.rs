@@ -157,15 +157,11 @@ pub fn declare_my_template_name() -> CInstruction {
     )
 }
 pub fn declare_my_template_name_function(name: &String) -> CInstruction {
-    format!(
-        "std::string {} = \"{}\"",
-        MY_TEMPLATE_NAME, name.to_string()
-    )
+    format!("std::string {} = \"{}\"", MY_TEMPLATE_NAME, name.to_string())
 }
 pub fn my_template_name() -> CInstruction {
     format!("{}", MY_TEMPLATE_NAME)
 }
-
 
 pub const MY_COMPONENT_NAME: &str = "myComponentName";
 pub fn declare_my_component_name() -> CInstruction {
@@ -180,10 +176,7 @@ pub fn my_component_name() -> CInstruction {
 
 pub const MY_FATHER: &str = "myFather";
 pub fn declare_my_father() -> CInstruction {
-    format!(
-        "u64 {} = {}->componentMemory[{}].idFather",
-        MY_FATHER, CIRCOM_CALC_WIT, CTX_INDEX
-    )
+    format!("u64 {} = {}->componentMemory[{}].idFather", MY_FATHER, CIRCOM_CALC_WIT, CTX_INDEX)
 }
 pub fn my_father() -> CInstruction {
     format!("{}", MY_FATHER)
@@ -191,10 +184,7 @@ pub fn my_father() -> CInstruction {
 
 pub const MY_ID: &str = "myId";
 pub fn declare_my_id() -> CInstruction {
-    format!(
-        "u64 {} = {}",
-        MY_ID, CTX_INDEX
-    )
+    format!("u64 {} = {}", MY_ID, CTX_INDEX)
 }
 pub fn my_id() -> CInstruction {
     format!("{}", MY_ID)
@@ -343,32 +333,36 @@ pub fn set_list(elems: Vec<usize>) -> String {
         set_string = format!("{}{},", set_string, elem);
     }
     set_string.pop();
-    set_string .push('}');
+    set_string.push('}');
     set_string
 }
-
 
 pub fn add_return() -> String {
     "return;".to_string()
 }
 
-pub fn generate_my_array_position(aux_dimensions: String, len_dimensions: String, param: String) -> String {
-    format!("{}->generate_position_array({}, {}, {})", CIRCOM_CALC_WIT, aux_dimensions, len_dimensions, param)
+pub fn generate_my_array_position(
+    aux_dimensions: String,
+    len_dimensions: String,
+    param: String,
+) -> String {
+    format!(
+        "{}->generate_position_array({}, {}, {})",
+        CIRCOM_CALC_WIT, aux_dimensions, len_dimensions, param
+    )
 }
 
 pub fn generate_my_trace() -> String {
     format!("{}->getTrace({})", CIRCOM_CALC_WIT, MY_ID)
 }
 
-pub fn build_failed_assert_message(line: usize) -> String{
-    
+pub fn build_failed_assert_message(line: usize) -> String {
     format!("std::cout << \"Failed assert in template/function \" << {} << \" line {}. \" <<  \"Followed trace of components: \" << {} << std::endl" ,
         MY_TEMPLATE_NAME,
         line,
         generate_my_trace()
      )
 }
-
 
 pub fn build_conditional(
     cond: Vec<String>,
@@ -395,8 +389,8 @@ pub fn collect_template_headers(instances: &TemplateList) -> Vec<String> {
         let params_run = argument_list(params_run);
         let run_header = format!("void {}_run({});", instance, params_run);
         let params_create = vec![
-            declare_signal_offset(), 
-            declare_component_offset(), 
+            declare_signal_offset(),
+            declare_component_offset(),
             declare_circom_calc_wit(),
             declare_component_name(),
             declare_component_father(),

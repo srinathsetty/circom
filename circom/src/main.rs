@@ -6,7 +6,6 @@ mod type_analysis_user;
 
 const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
-
 use ansi_term::Colour;
 use input_user::Input;
 fn main() {
@@ -47,10 +46,10 @@ fn start() -> Result<(), ()> {
         c_flag: user_input.c_flag(),
         wasm_flag: user_input.wasm_flag(),
         wat_flag: user_input.wat_flag(),
-	js_folder: user_input.js_folder().to_string(),
-	wasm_name: user_input.wasm_name().to_string(),
-	c_folder: user_input.c_folder().to_string(),
-	c_run_name: user_input.c_run_name().to_string(),
+        js_folder: user_input.js_folder().to_string(),
+        wasm_name: user_input.wasm_name().to_string(),
+        c_folder: user_input.c_folder().to_string(),
+        c_run_name: user_input.c_run_name().to_string(),
         c_file: user_input.c_file().to_string(),
         dat_file: user_input.dat_file().to_string(),
         wat_file: user_input.wat_file().to_string(),

@@ -96,10 +96,10 @@ fn build_clusters(linear: LinkedList<C>, no_vars: usize) -> Vec<Cluster> {
 }
 
 fn rebuild_witness(
-    max_signal: usize, 
-    deleted: HashSet<usize>, 
-    forbidden: &HashSet<usize>, 
-    non_linear_map: SignalToConstraints, 
+    max_signal: usize,
+    deleted: HashSet<usize>,
+    forbidden: &HashSet<usize>,
+    non_linear_map: SignalToConstraints,
     remove_unused: bool,
 ) -> SignalMap {
     let mut map = SignalMap::with_capacity(max_signal);
@@ -107,7 +107,10 @@ fn rebuild_witness(
     for signal in 0..max_signal {
         if deleted.contains(&signal) {
             free.push_back(signal);
-        } else if remove_unused && !forbidden.contains(&signal) && !non_linear_map.contains_key(&signal){
+        } else if remove_unused
+            && !forbidden.contains(&signal)
+            && !non_linear_map.contains_key(&signal)
+        {
             free.push_back(signal);
         } else if let Some(new_pos) = free.pop_front() {
             map.insert(signal, new_pos);
@@ -571,7 +574,7 @@ pub fn simplification(smp: &mut Simplifier) -> (ConstraintStorage, SignalMap) {
     let _ = round_id;
     let mut linear = with_linear;
     let mut apply_round = apply_linear && no_rounds > 0 && !linear.is_empty();
-    let mut non_linear_map = if apply_round || remove_unused{
+    let mut non_linear_map = if apply_round || remove_unused {
         // println!("Building non-linear map");
         let now = SystemTime::now();
         let non_linear_map = build_non_linear_signal_map(&constraint_storage);
@@ -615,8 +618,8 @@ pub fn simplification(smp: &mut Simplifier) -> (ConstraintStorage, SignalMap) {
     }
 
     for constraint in linear {
-        if remove_unused{
-            let signals =  C::take_cloned_signals(&constraint);
+        if remove_unused {
+            let signals = C::take_cloned_signals(&constraint);
             let c_id = constraint_storage.add_constraint(constraint);
             for signal in signals {
                 if let Some(list) = non_linear_map.get_mut(&signal) {
@@ -627,14 +630,13 @@ pub fn simplification(smp: &mut Simplifier) -> (ConstraintStorage, SignalMap) {
                     non_linear_map.insert(signal, new);
                 }
             }
-        }
-        else{
+        } else {
             constraint_storage.add_constraint(constraint);
         }
     }
     for constraint in lconst {
-        if remove_unused{
-            let signals =  C::take_cloned_signals(&constraint);
+        if remove_unused {
+            let signals = C::take_cloned_signals(&constraint);
             let c_id = constraint_storage.add_constraint(constraint);
             for signal in signals {
                 if let Some(list) = non_linear_map.get_mut(&signal) {
@@ -645,17 +647,13 @@ pub fn simplification(smp: &mut Simplifier) -> (ConstraintStorage, SignalMap) {
                     non_linear_map.insert(signal, new);
                 }
             }
-        }
-        else{
+        } else {
             constraint_storage.add_constraint(constraint);
         }
     }
 
-    let erased = crate::non_linear_simplification::simplify(
-        &mut constraint_storage,
-        &forbidden,
-        &field
-    );
+    let erased =
+        crate::non_linear_simplification::simplify(&mut constraint_storage, &forbidden, &field);
 
     for signal in erased {
         deleted.insert(signal);
@@ -666,7 +664,8 @@ pub fn simplification(smp: &mut Simplifier) -> (ConstraintStorage, SignalMap) {
     let signal_map = {
         // println!("Rebuild witness");
         let now = SystemTime::now();
-        let signal_map = rebuild_witness(max_signal, deleted, &forbidden, non_linear_map, remove_unused);
+        let signal_map =
+            rebuild_witness(max_signal, deleted, &forbidden, non_linear_map, remove_unused);
         let _dur = now.elapsed().unwrap().as_millis();
         // println!("End of rebuild witness: {} ms", dur);
         signal_map

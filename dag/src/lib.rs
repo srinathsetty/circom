@@ -93,11 +93,18 @@ pub struct Edge {
     in_number: usize,
     out_number: usize,
     in_component_number: usize,
-    out_component_number: usize
+    out_component_number: usize,
 }
 impl Edge {
     fn new_entry(id: usize) -> Edge {
-        Edge { label: "main".to_string(), goes_to: id, in_number: 0, out_number: 0, in_component_number: 0, out_component_number: 0  }
+        Edge {
+            label: "main".to_string(),
+            goes_to: id,
+            in_number: 0,
+            out_number: 0,
+            in_component_number: 0,
+            out_component_number: 0,
+        }
     }
 
     pub fn get_goes_to(&self) -> usize {
@@ -154,14 +161,16 @@ pub struct Node {
 }
 
 impl Node {
-    fn new(id: usize, template_name: String, is_parallel:bool) -> Node {
-        Node { 
-            template_name, entry: Edge::new_entry(id),
-            number_of_components: 1, 
-            is_parallel, 
-            has_parallel_sub_cmp: false, 
+    fn new(id: usize, template_name: String, is_parallel: bool) -> Node {
+        Node {
+            template_name,
+            entry: Edge::new_entry(id),
+            number_of_components: 1,
+            is_parallel,
+            has_parallel_sub_cmp: false,
             forbidden_if_main: vec![0].into_iter().collect(),
-            ..Node::default() }
+            ..Node::default()
+        }
     }
 
     fn add_input(&mut self, name: String, is_public: bool) {
@@ -324,7 +333,7 @@ impl DAG {
         }
     }
 
-    pub fn add_node(&mut self, template_name: String, is_parallel:bool) -> usize {
+    pub fn add_node(&mut self, template_name: String, is_parallel: bool) -> usize {
         let id = self.nodes.len();
         self.nodes.push(Node::new(id, template_name, is_parallel));
         self.adjacency.push(vec![]);
@@ -355,7 +364,7 @@ impl DAG {
         }
     }
 
-    pub fn set_number_of_subcomponents_indexes(&mut self, number_scmp: usize){
+    pub fn set_number_of_subcomponents_indexes(&mut self, number_scmp: usize) {
         if let Option::Some(node) = self.get_mut_main() {
             node.set_number_of_subcomponents_indexes(number_scmp);
         }

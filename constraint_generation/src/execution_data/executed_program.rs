@@ -136,7 +136,8 @@ fn produce_dags_stats(dag: &DAG) -> Stats {
         all_needed_subcomponents_indexes[index] += node.number_of_subcomponents_indexes();
         for c in dag.get_edges(index).unwrap() {
             all_created_cmp[index] += all_created_cmp[c.get_goes_to()];
-            all_needed_subcomponents_indexes[index] += all_needed_subcomponents_indexes[c.get_goes_to()];
+            all_needed_subcomponents_indexes[index] +=
+                all_needed_subcomponents_indexes[c.get_goes_to()];
             all_signals[index] += all_signals[c.get_goes_to()];
             all_io[index] += all_io[c.get_goes_to()];
         }

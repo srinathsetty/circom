@@ -47,7 +47,7 @@ fn obtain_linear_combination_block<T>(
     field_size: usize,
 ) -> (Vec<u8>, usize)
 where
-    T: AsRef<[u8]>  + std::cmp::Ord + std::hash::Hash,
+    T: AsRef<[u8]> + std::cmp::Ord + std::hash::Hash,
 {
     let mut block = Vec::new();
     let non_zero_factors = BigInt::from(linear_combination.len());

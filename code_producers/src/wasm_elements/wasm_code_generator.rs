@@ -226,7 +226,9 @@ pub fn get_initial_size_of_memory(producer: &WASMProducer) -> usize {
 
 //------------------- generate all kinds of Data ------------------
 
-pub fn generate_hash_map(signal_name_list: &Vec<(String, usize, usize)>) -> Vec<(u64, usize, usize)> {
+pub fn generate_hash_map(
+    signal_name_list: &Vec<(String, usize, usize)>,
+) -> Vec<(u64, usize, usize)> {
     assert!(signal_name_list.len() <= 256);
     let len = 256;
     let mut hash_map = vec![(0, 0, 0); len];
@@ -923,7 +925,7 @@ pub fn set_input_signal_generator(producer: &WASMProducer) -> Vec<WasmInstructio
     instructions.push(add_if()); // if 3
     instructions.push(set_constant(&exception_code_input_array_access_exeeds_size().to_string()));
     instructions.push(call("$exceptionHandler"));
-    instructions.push(add_else()); // else if 3    
+    instructions.push(add_else()); // else if 3
     instructions.push(get_local("$mp"));
     instructions.push(load32(Some("8"))); // load the first component (signal position)
     instructions.push(get_local("$pos"));
@@ -1490,7 +1492,7 @@ pub fn generate_utils_js_file(js_folder: &PathBuf) -> std::io::Result<()> {
 
 pub fn generate_generate_witness_js_file(js_folder: &PathBuf) -> std::io::Result<()> {
     use std::io::BufWriter;
-    let mut file_path  = js_folder.clone();
+    let mut file_path = js_folder.clone();
     file_path.push("generate_witness");
     file_path.set_extension("js");
     let file_name = file_path.to_str().unwrap();
@@ -1507,7 +1509,7 @@ pub fn generate_generate_witness_js_file(js_folder: &PathBuf) -> std::io::Result
 
 pub fn generate_witness_calculator_js_file(js_folder: &PathBuf) -> std::io::Result<()> {
     use std::io::BufWriter;
-    let mut file_path  = js_folder.clone();
+    let mut file_path = js_folder.clone();
     file_path.push("witness_calculator");
     file_path.set_extension("js");
     let file_name = file_path.to_str().unwrap();
